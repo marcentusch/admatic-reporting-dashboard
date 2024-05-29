@@ -1,13 +1,14 @@
 {
-  "name": "material-ui-vite",
+  "name": "admatic-reporting-dashboard",
   "version": "5.0.0",
+  "homepage": "https://marcentusch.github.io/admatic-reporting-dashboard/",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@emotion/react": "latest",
