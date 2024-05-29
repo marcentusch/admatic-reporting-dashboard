@@ -8,6 +8,7 @@ import BasicLineChart from "./LineChart";
 import BasicPie from "./PieChart";
 import SideBarChart from "./SideBarChart";
 import { Typography, Divider } from "@mui/material";
+import GaugeChart from "./GaugeChart";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -26,10 +27,10 @@ export default function BaseGrid() {
       </Typography>
       <Divider />
       <Grid container my={2} spacing={2}>
-        <Grid item xs={8}>
+        <Grid item xs={7}>
           <BarGraph />
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={5}>
           <BasicLineChart />
         </Grid>
       </Grid>
@@ -42,8 +43,11 @@ export default function BaseGrid() {
         <Grid item xs={4}>
           <BasicPie />
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={6}>
           <SideBarChart />
+        </Grid>
+        <Grid item xs={2}>
+          <GaugeChart />
         </Grid>
       </Grid>
 
