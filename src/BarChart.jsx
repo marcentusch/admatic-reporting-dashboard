@@ -1,19 +1,9 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import colors from './colors';
+import { generateRandomData } from './random';
 
 export default function BarGraph() {
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function generateRandomData(length, min, max) {
-    const randomData = [];
-    for (let i = 0; i < length; i++) {
-        randomData.push(getRandomNumber(min, max));
-    }
-    return randomData;
-}
   return (
     <BarChart
         colors={[colors.blue, colors.darkBlue, colors.lightBlue]}

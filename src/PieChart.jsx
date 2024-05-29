@@ -1,11 +1,10 @@
 import * as React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
 import colors from "./colors";
+import {getRandomNumber} from "./random"
 
 export default function BasicPie() {
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+
   return (
     <PieChart
       colors={[colors.blue, colors.lightBlue, colors.darkBlue]}
