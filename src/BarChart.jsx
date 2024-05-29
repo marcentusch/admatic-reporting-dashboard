@@ -6,7 +6,7 @@ import { generateRandomData } from './random';
 export default function BarGraph() {
   return (
     <BarChart
-        colors={[colors.blue, colors.darkBlue, colors.lightBlue]}
+        colors={[colors.blue, colors.darkBlue, colors.lightBlue, colors.green]}
         series={[
           { data: generateRandomData(4, 1, 100) },
           { data: generateRandomData(4, 1, 100) },
