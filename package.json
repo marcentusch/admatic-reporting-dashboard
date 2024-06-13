@@ -16,7 +16,8 @@
     "@mui/material": "next",
     "@mui/x-charts": "^7.5.1",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-router-dom": "^6.23.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "latest",

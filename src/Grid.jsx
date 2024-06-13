@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -10,16 +10,28 @@ import SideBarChart from "./SideBarChart";
 import { Typography, Divider } from "@mui/material";
 import GaugeChart from "./GaugeChart";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
-
 export default function BaseGrid() {
-  const rowMargin = 2;
+  const [campaigns, setCampaigns] = useState([]);
+  const path = window.location.pathname;
+  const parts = path.split("/");
+  const accountId = parts[parts.length - 1];
+
+  useEffect(() => {
+    const importModule = async () => {
+      try {
+        const { campaigns } = await import(`./input/${accountId}-campaigns.js`);
+        setCampaigns(campaigns);
+      } catch (error) {
+        console.error(
+          `Failed to load campaigns for account ${accountId}:`,
+          error
+        );
+      }
+    };
+
+    importModule();
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Typography variant="h5" gutterBottom>
@@ -64,6 +76,7 @@ export default function BaseGrid() {
           <BasicPie />
         </Grid>
       </Grid>
+      {campaigns.adAccountName}
     </Box>
   );
 }
