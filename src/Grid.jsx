@@ -88,6 +88,35 @@ export default function BaseGrid() {
           <BasicPie data={mappedConversions} title="Fordeling af conversions" />
         </Grid>
       </Grid>
+      <Grid container my={2} spacing={2}>
+        <Grid item xs={2}>
+          <MetricCard title="CTR" value={parseFloat(insights.ctr).toFixed(1)} />
+        </Grid>
+        <Grid item xs={2}>
+          <MetricCard
+            title="Frekvens"
+            value={parseFloat(insights.frequency).toFixed(1)}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <MetricCard
+            title="CPC"
+            value={`${parseFloat(insights.cpc).toFixed(1)} DKK`}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <MetricCard
+            title="CPM"
+            value={`${parseFloat(insights.cpm).toFixed(1)} DKK`}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <MetricCard
+            title="CPP"
+            value={`${parseFloat(insights.cpp).toFixed(1)} DKK`}
+          />
+        </Grid>
+      </Grid>
       <Grid container my={4} spacing={2}>
         <Grid item xs={12}>
           <BarGraph
