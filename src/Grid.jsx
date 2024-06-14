@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import BarGraph from "./BarChart";
-import BasicLineChart from "./LineChart";
-import BasicPie from "./PieChart";
+import { BasicPie } from "./PieChart";
 import SideBarChart from "./SideBarChart";
-import { Typography, Divider } from "@mui/material";
+import { Typography, Divider, Card, CardContent } from "@mui/material";
 import GaugeChart from "./GaugeChart";
 
 export default function BaseGrid() {
-  const [campaigns, setCampaigns] = useState([]);
+  const [adAccount, setAdAccount] = useState(null);
+  const isLoading = adAccount?.campaigns[0] === undefined || null;
   const path = window.location.pathname;
   const parts = path.split("/");
   const accountId = parts[parts.length - 1];
@@ -20,7 +18,7 @@ export default function BaseGrid() {
     const importModule = async () => {
       try {
         const { campaigns } = await import(`./input/${accountId}-campaigns.js`);
-        setCampaigns(campaigns);
+        setAdAccount(campaigns);
       } catch (error) {
         console.error(
           `Failed to load campaigns for account ${accountId}:`,
@@ -32,51 +30,63 @@ export default function BaseGrid() {
     importModule();
   }, []);
 
+  if (isLoading) return <p>loading...</p>;
+
+  const insights = adAccount.campaigns[0].insights.data[0];
+  const filteredActions = insights.actions.filter(
+    (action) => Number(action.value) <= 500
+  );
+  const mappedConversions = insights.conversions.map((conversion, i) => ({
+    id: Number(i),
+    value: Number(conversion.value),
+    label: conversion.action_type,
+  }));
+
+  const MetricCard = ({ title, value }) => (
+    <Card>
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          {title}
+        </Typography>
+        <Typography variant="h4">{value}</Typography>
+      </CardContent>
+    </Card>
+  );
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Typography variant="h5" gutterBottom>
-        Din hjemmesides besøg og hvor de kommer fra
+        Virksomhed: {adAccount.adAccountName}
+      </Typography>
+      <Typography variant="h6" gutterBottom>
+        Kampagne: {adAccount.campaigns[0].name}
       </Typography>
       <Divider />
       <Grid container my={2} spacing={2}>
-        <Grid item xs={7}>
-          <BarGraph />
+        <Grid item xs={3}>
+          <MetricCard title="Visninger" value={insights.impressions} />
         </Grid>
-        <Grid item xs={5}>
-          <BasicLineChart />
+        <Grid item xs={3}>
+          <MetricCard title="Rækkevidde" value={insights.reach} />
+        </Grid>
+        <Grid item xs={3}>
+          <MetricCard title="Klik" value={insights.clicks} />
+        </Grid>
+        <Grid item xs={3}>
+          <MetricCard title="Forbrug" value={`${insights.spend} DKK`} />
         </Grid>
       </Grid>
-
-      <Typography variant="h5" gutterBottom>
-        Målbare henvendelser fra din hjemmeside
-      </Typography>
-      <Divider />
       <Grid container my={2} spacing={2}>
-        <Grid item xs={4}>
-          <BasicPie />
+        <Grid item xs={6}>
+          <BarGraph
+            actionValues={filteredActions.map((action) => Number(action.value))}
+            actionTypes={filteredActions.map((action) => action.action_type)}
+          />
         </Grid>
         <Grid item xs={6}>
-          <SideBarChart />
-        </Grid>
-        <Grid item xs={2}>
-          <GaugeChart />
+          <BasicPie data={mappedConversions} title="Fordeling af conversions" />
         </Grid>
       </Grid>
-
-      <Typography variant="h5" gutterBottom>
-        Dine annoncer (Google Ads), placeringer (SEO) og virksomhedprofil på
-        Google
-      </Typography>
-      <Divider />
-      <Grid container my={2} spacing={2}>
-        <Grid item xs={8}>
-          <BarGraph />
-        </Grid>
-        <Grid item xs={4}>
-          <BasicPie />
-        </Grid>
-      </Grid>
-      {campaigns.adAccountName}
     </Box>
   );
 }
