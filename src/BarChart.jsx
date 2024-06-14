@@ -3,11 +3,11 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import colors from "./colors";
 import { Typography } from "@mui/material";
 
-const BarGraph = ({ actionValues, actionTypes }) =>
+const BarGraph = ({ title, actionValues, actionTypes }) =>
   !actionValues || !actionTypes ? null : (
     <>
       <Typography variant="h6" align="center" gutterBottom>
-        Kampagnehandlinger og Værdier
+        {title}
       </Typography>
       <BarChart
         colors={[colors.blue, colors.darkBlue, colors.lightBlue, colors.green]}

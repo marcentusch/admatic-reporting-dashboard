@@ -76,15 +76,29 @@ export default function BaseGrid() {
           <MetricCard title="Forbrug" value={`${insights.spend} DKK`} />
         </Grid>
       </Grid>
-      <Grid container my={2} spacing={2}>
+      <Grid container my={4} spacing={2}>
         <Grid item xs={6}>
           <BarGraph
+            title="Kampagnehandlinger og Værdier"
             actionValues={filteredActions.map((action) => Number(action.value))}
             actionTypes={filteredActions.map((action) => action.action_type)}
           />
         </Grid>
         <Grid item xs={6}>
           <BasicPie data={mappedConversions} title="Fordeling af conversions" />
+        </Grid>
+      </Grid>
+      <Grid container my={4} spacing={2}>
+        <Grid item xs={12}>
+          <BarGraph
+            title="Omkostning pr. Handlingstype"
+            actionValues={insights.cost_per_action_type.map((type) =>
+              Number(type.value)
+            )}
+            actionTypes={insights.cost_per_action_type.map(
+              (type) => type.action_type
+            )}
+          />
         </Grid>
       </Grid>
     </Box>
