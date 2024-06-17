@@ -9,9 +9,8 @@ import { adAccounts } from "./input/adAccounts";
 export default function BaseGrid() {
   const [adAccount, setAdAccount] = useState(null);
   const isLoading = adAccount?.campaigns[0] === undefined || null;
-  const path = window.location.pathname;
-  const parts = path.split("/");
-  const accountId = parts[parts.length - 1];
+  const urlParams = new URLSearchParams(window.location.search);
+  const accountId = urlParams.get("id");
 
   useEffect(() => {
     setAdAccount(adAccounts.find((a) => a.adAccountId === accountId));
