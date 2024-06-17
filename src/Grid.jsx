@@ -3,42 +3,27 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import BarGraph from "./BarChart";
 import { BasicPie } from "./PieChart";
-import SideBarChart from "./SideBarChart";
 import { Typography, Divider, Card, CardContent } from "@mui/material";
+import { adAccounts } from "./input/adAccounts";
 
 export default function BaseGrid() {
   const [adAccount, setAdAccount] = useState(null);
-  const [isInvalid, setIsInvalid] = useState(false);
   const isLoading = adAccount?.campaigns[0] === undefined || null;
   const path = window.location.pathname;
   const parts = path.split("/");
   const accountId = parts[parts.length - 1];
 
   useEffect(() => {
-    const importModule = async () => {
-      try {
-        const { campaigns } = await import(`./input/${accountId}-campaigns.js`);
-        setAdAccount(campaigns);
-      } catch (error) {
-        setIsInvalid(true);
-        console.error(
-          `Failed to load campaigns for account ${accountId}:`,
-          error
-        );
-      }
-    };
+    setAdAccount(adAccounts.find((a) => a.adAccountId === accountId));
+  }, []);
 
-    importModule();
-  }, [isInvalid]);
-
-  if (isInvalid) return <p>Kontakt Admatic for at se dit dashboard</p>;
   if (isLoading) return <p>loading...</p>;
 
   const insights = adAccount.campaigns[0].insights.data[0];
   const filteredActions = insights.actions.filter(
     (action) => Number(action.value) <= 500
   );
-  const mappedConversions = insights.conversions.map((conversion, i) => ({
+  const mappedConversions = insights.conversions?.map((conversion, i) => ({
     id: Number(i),
     value: Number(conversion.value),
     label: conversion.action_type,

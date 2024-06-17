@@ -3,8 +3,9 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import colors from "./colors";
 import { Typography } from "@mui/material";
 
-export const BasicPie = ({ data, title }) =>
-  data.length == 0 ? null : (
+export const BasicPie = ({ data, title }) => {
+  if (!data) return null;
+  return data.length == 0 ? null : (
     <>
       <Typography variant="h6" align="center" gutterBottom>
         {title}
@@ -21,3 +22,4 @@ export const BasicPie = ({ data, title }) =>
       />
     </>
   );
+};
