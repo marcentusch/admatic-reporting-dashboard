@@ -5,10 +5,10 @@ import BarGraph from "./BarChart";
 import { BasicPie } from "./PieChart";
 import SideBarChart from "./SideBarChart";
 import { Typography, Divider, Card, CardContent } from "@mui/material";
-import GaugeChart from "./GaugeChart";
 
 export default function BaseGrid() {
   const [adAccount, setAdAccount] = useState(null);
+  const [isInvalid, setIsInvalid] = useState(false);
   const isLoading = adAccount?.campaigns[0] === undefined || null;
   const path = window.location.pathname;
   const parts = path.split("/");
@@ -20,6 +20,7 @@ export default function BaseGrid() {
         const { campaigns } = await import(`./input/${accountId}-campaigns.js`);
         setAdAccount(campaigns);
       } catch (error) {
+        setIsInvalid(true);
         console.error(
           `Failed to load campaigns for account ${accountId}:`,
           error
@@ -28,8 +29,9 @@ export default function BaseGrid() {
     };
 
     importModule();
-  }, []);
+  }, [isInvalid]);
 
+  if (isInvalid) return <p>Kontakt Admatic for at se dit dashboard</p>;
   if (isLoading) return <p>loading...</p>;
 
   const insights = adAccount.campaigns[0].insights.data[0];
@@ -89,16 +91,16 @@ export default function BaseGrid() {
         </Grid>
       </Grid>
       <Grid container my={2} spacing={2}>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <MetricCard title="CTR" value={parseFloat(insights.ctr).toFixed(1)} />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <MetricCard
             title="Frekvens"
             value={parseFloat(insights.frequency).toFixed(1)}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={3}>
           <MetricCard
             title="CPC"
             value={`${parseFloat(insights.cpc).toFixed(1)} DKK`}
@@ -110,10 +112,16 @@ export default function BaseGrid() {
             value={`${parseFloat(insights.cpm).toFixed(1)} DKK`}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={6}>
           <MetricCard
             title="CPP"
             value={`${parseFloat(insights.cpp).toFixed(1)} DKK`}
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <MetricCard
+            title="Inline Link Clicks"
+            value={`${parseFloat(insights.inline_link_clicks).toFixed(1)}`}
           />
         </Grid>
       </Grid>
